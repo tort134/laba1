@@ -86,3 +86,12 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'main.AdvUser'
+
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+SERVER_EMAIL = 'ваш_логин@yandex.ru'
+DEFAULT_FROM_EMAIL = 'ваш_логин@yandex.ru'
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_HOST_USER = 'ваш_логин@yandex.ru'
+EMAIL_HOST_PASSWORD = 'сгенерированный_пароль_приложения'
+EMAIL_PORT = 465
