@@ -8,10 +8,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, CreateView, TemplateView
+from django.core.signing import BadSignature
 
 from .forms import ChangeUserInfoForm, RegisterUserForm
 from .models import AdvUser
-
+from .utilities import signer
 
 def index(request):
    return render(request, 'main/index.html')
@@ -64,3 +65,18 @@ class RegisterUserView(CreateView):
 
 class RegisterDoneView(TemplateView):
    template_name = 'main/register_done.html'
+
+def user_activate(request, sign):
+   try:
+       username = signer.unsign(sign)
+   except BadSignature:
+       return render(request, 'main/bad_signature.html')
+   user = get_object_or_404(AdvUser, username=username)
+   if user.is_activated:
+       template = 'main/user_is_activated.html'
+   else:
+       template = 'main/activation_done.html'
+       user.is_activated = True
+       user.is_active = True
+       user.save()
+   return render(request, template)
