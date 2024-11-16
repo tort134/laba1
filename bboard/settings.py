@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -11,6 +12,8 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'main.apps.MainConfig',
     'bootstrap4',
+    'django_cleanup',
+    'easy_thumbnails',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -72,6 +75,16 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+THUMBNAIL_ALIASES = {
+   '': {
+       'default': {
+           'size': (96, 96),
+           'crop': 'scale',
+       },
+   },
+}
+THUMBNAIL_BASEDIR = 'thumbnails'
+
 LANGUAGE_CODE = 'ru-ru'
 
 TIME_ZONE = 'UTC'
@@ -96,3 +109,7 @@ EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_HOST_USER = 'ваш_логин@yandex.ru'
 EMAIL_HOST_PASSWORD = 'сгенерированный_пароль_приложения'
 EMAIL_PORT = 465
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
