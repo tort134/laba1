@@ -15,6 +15,11 @@ class AdvUser(AbstractUser):
    send_messages = models.BooleanField(default=True,
                                        verbose_name='Оповещать при новых комментариях?')
 
+   def delete(self, *args, **kwargs):
+       for bb in self.bb_set.all():
+           bb.delete()
+       super().delete(*args, **kwargs)
+
    class Meta(AbstractUser.Meta):
        pass
 
@@ -83,3 +88,12 @@ class Bb(models.Model):
        verbose_name_plural = 'Объявления'
        verbose_name = 'Объявление'
        ordering = ['-created_at']
+
+class AdditionalImage(models.Model):
+   bb = models.ForeignKey(Bb, on_delete=models.CASCADE, verbose_name='Объявление')
+   image = models.ImageField(upload_to=get_timestamp_path, verbose_name='Изображение')
+
+   class Meta:
+       verbose_name_plural = 'Дополнительные иллюстрации'
+       verbose_name = 'Дополнительная иллюстрация'
+
